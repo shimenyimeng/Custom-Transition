@@ -7,8 +7,11 @@
 //
 
 #import "ViewController.h"
+#import "GXFViewController.h"
+#import "GXFPresentTransition.h"
+#import "GXFDissmissTransition.h"
 
-@interface ViewController ()
+@interface ViewController () <UIViewControllerTransitioningDelegate>
 
 @end
 
@@ -19,11 +22,33 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
+    
+    GXFPresentTransition *presentTransition = [GXFPresentTransition new];
+    
+    return presentTransition;
 }
+
+- (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+    
+    GXFDissmissTransition *dissmissTransition = [GXFDissmissTransition new];
+    
+    return dissmissTransition;
+}
+
+- (IBAction)buttonClick {
+    
+    GXFViewController *SecondVc = [GXFViewController new];
+    
+    // 如果自定义转场，则上一个控制器的view不会立刻消失，可以查看图层渲染信息
+    SecondVc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    SecondVc.transitioningDelegate = self;
+    
+    [self presentViewController:SecondVc animated:YES completion:nil];
+}
+
+
 
 
 @end
